@@ -18,7 +18,6 @@ public class Partie {
         this.partieTerminee = partieTerminee;
     }
 
-
     public static Partie create(Joueur joueur, String motADeviner) {
         return new Partie(joueur, motADeviner, 0, false);
     }
@@ -48,31 +47,15 @@ public class Partie {
     // si toutes les lettres sont correctement placées,
     // on a terminé la partie
     public Reponse tourDeJeu(String motPropose) {
-        //this.verifieNbEssais();
-        //if (!(partieTerminee)) {
-        //    MotSecret motSecret = new MotSecret(motADeviner);
-        //    Reponse r = motSecret.compareProposition(motPropose);
-        //    if(r.lettresToutesPlacees()){
-        //        done();
-        //    }
-        //    return r;
-        //}
-        nbEssais++;
-        if (!isTerminee()){
-            MotSecret motSecret = new MotSecret(motADeviner);
-                Reponse r = motSecret.compareProposition(motPropose);
-                if(r.lettresToutesPlacees()){
-                    this.partieTerminee = true;
-                }
-                return r;
+        MotSecret motSecret = new MotSecret(motADeviner);
+        Reponse r = motSecret.compareProposition(motPropose);
+        if (!isTerminee()) {
+            nbEssais++;
+            if (r.lettresToutesPlacees()) {
+                this.partieTerminee = true;
+            }
         }
-        return null;
-    }
-
-    // vérifie que le nombre d'essais max n'est pas atteint
-    private void verifieNbEssais() {
-        nbEssais++;
-        this.partieTerminee = isTerminee();
+        return r;
     }
 
     // la partie est-elle terminée
@@ -81,10 +64,5 @@ public class Partie {
             partieTerminee = true;
         }
         return partieTerminee;
-    }
-
-    // la partie est terminée
-    void done() {
-        partieTerminee = true;
     }
 }

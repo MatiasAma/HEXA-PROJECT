@@ -8,7 +8,6 @@ import static org.iut.mastermind.domain.proposition.Lettre.*;
 public class Reponse {
     private final String motSecret;
     private final List<Lettre> resultat = new ArrayList<>();
-    private int position;
 
     public Reponse(String mot) {
         this.motSecret = mot;
@@ -24,8 +23,7 @@ public class Reponse {
     // du mot proposé
     public void compare(String essai) {
         for (char charactere : essai.toCharArray()) {
-            this.position = essai.indexOf(charactere);
-            this.resultat.add(evaluationCaractere(charactere));
+            this.resultat.add(evaluationCaractere(charactere,essai.indexOf(charactere)));
         }
     }
 
@@ -43,21 +41,9 @@ public class Reponse {
     }
 
     // renvoie le statut du caractère
-    private Lettre evaluationCaractere(char carCourant) {
-        boolean present = estPresent(carCourant);
-        if (!present) return INCORRECTE;
-        boolean place = estPlace(carCourant);
-        if (!place) return NON_PLACEE;
+    private Lettre evaluationCaractere(char carCourant, int position) {
+        if (!this.motSecret.contains(Character.toString(carCourant))) return INCORRECTE;
+        if (!(this.motSecret.toCharArray()[position] == carCourant)) return NON_PLACEE;
         return PLACEE;
-    }
-
-    // le caractère est présent dans le mot secret
-    private boolean estPresent(char carCourant) {
-        return this.motSecret.contains(Character.toString(carCourant));
-    }
-
-    // le caractère est placé dans le mot secret
-    private boolean estPlace(char carCourant) {
-        return this.motSecret.toCharArray()[position] == carCourant;
     }
 }
